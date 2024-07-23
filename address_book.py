@@ -108,11 +108,12 @@ class AddressBook(UserDict):
         upcoming_birthdays = []
         today = date.today()
         for name, contact in self.data.items():
-            birthday_this_year = contact.birthday.value.replace(year=today.year).date()
-            if birthday_this_year < today:
-                birthday_this_year += timedelta(days=366)
-            if 0 <= (birthday_this_year - today).days <= days:
-                birthday_this_year = self.adjust_for_weekend(birthday_this_year)
-                congratulation_date_str = self.date_to_string(birthday_this_year)
-                upcoming_birthdays.append({"name": name, "congratulation_date": congratulation_date_str})
+            if contact.birthday:
+                birthday_this_year = contact.birthday.value.replace(year=today.year).date()
+                if birthday_this_year < today:
+                    birthday_this_year += timedelta(days=366)
+                if 0 <= (birthday_this_year - today).days <= days:
+                    birthday_this_year = self.adjust_for_weekend(birthday_this_year)
+                    congratulation_date_str = self.date_to_string(birthday_this_year)
+                    upcoming_birthdays.append({"name": name, "congratulation_date": congratulation_date_str})
         return upcoming_birthdays
